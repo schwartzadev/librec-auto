@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The librec-auto project aims to automate recommender system experimens using Librec. 
+The librec-auto project aims to automate recommender system experiments using Librec. 
 
 ## Workflow
 
