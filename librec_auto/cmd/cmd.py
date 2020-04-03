@@ -41,7 +41,7 @@ class SequenceCmd(Cmd):
             self.set_commands(cmds)
 
     def setup (self, args):
-        for cmd in self.commands:
+        for cmd in self._commands:
             cmd.setup(args)
 
     def set_commands(self, cmds):

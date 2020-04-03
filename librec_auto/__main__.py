@@ -38,6 +38,9 @@ def read_args():
     parser.add_argument("-nc", "--no_cache",
                         help="Do not cache any intermediate results (Not implemented)",
                         action="store_true")
+    parser.add_argument("-pl", "--preserve_log",
+                        help="Preserve the log files when librec commands are executed.",
+                        action="store_true")
 
     input_args = parser.parse_args()
     return vars(input_args)
@@ -109,7 +112,7 @@ def build_librec_commands(librec_action, args, config):
         return SequenceCmd(librec_commands)
 
 # The purge rule is: if the command says to run step X, purge the results of X and everything after.
-def setup_commands (args, config):
+def create_commands (args, config):
     action = args['action']
     purge_noask = args['quiet']
 
@@ -200,8 +203,9 @@ if __name__ == '__main__':
         config = load_config(args)
 
         if len(config.get_prop_dict()) > 0:
-            command = setup_commands(args, config)
+            command = create_commands(args, config)
             if isinstance(command, Cmd):
+                command.setup(args)
                 if args['dry_run']:
                     command.dry_run(config)
                 else:

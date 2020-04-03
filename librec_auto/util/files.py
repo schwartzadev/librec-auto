@@ -52,7 +52,7 @@ class Files:
     _DEFAULT_LA_JAR = "auto.jar"
     _DEFAULT_LR_JAR = "librec.jar"
     _DEFAULT_RULES_FILE = "rules/element-rules.xml"
-    LOG_PATH = "../log/librec.log"
+    LOG_PATH = "log/librec.log"
     DEFAULT_CONFIG_FILENAME = "config.xml"
 
     # 2019-11-22 RB Do we use this anywhere?

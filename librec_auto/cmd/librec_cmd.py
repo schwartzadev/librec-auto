@@ -14,6 +14,7 @@ class LibrecCmd (Cmd):
     _sub_no = -1
     _config: ConfigCmd = None
     _sub_path: SubPaths = None
+    _preserve_log = False
 
     def __str__(self):
         return f'LibrecCmd(sub-exp: {self._sub_no}, command: {self._command})'
@@ -24,12 +25,19 @@ class LibrecCmd (Cmd):
         self._config = None
 
     def setup(self, args):
+        self._preserve_log = args['preserve_log']
         pass
+
+    def get_log_file (self):
+        return self._sub_path.get_path('log') / SubPaths.DEFAULT_LOG_FILENAME
 
     # 2020-01-06 RB Theoretically, subprocess.run is the right way to do this, but capturing the log output
     # seems to work more naturally with Popen. A mystery for future developers. Also, capture_output requires
     # Python 3.8, which may be too much to ask at this point.
     # proc = subprocess.run(cmd, capture_output=True
+    # 2020-04-02 RB Two problems here: (1) the fixed log path means that each run of librec overwrites the log of the
+    # previous one, bad for debugging and for re-ranking. (2) errors in the subprocess cause the log file not to be written,
+    # very bad for debugging.
     def execute_librec(self):
         cmd = self.create_proc_spec()
 
@@ -39,7 +47,7 @@ class LibrecCmd (Cmd):
             return
 
         print(f"librec-auto: Running librec. {cmd}")
-        log_path = self._sub_path.get_path('log') / SubPaths.DEFAULT_LOG_FILENAME
+        log_path = self.get_log_file()
 
         f = open(str(log_path), 'w+')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -128,11 +136,17 @@ class LibrecCmd (Cmd):
         results_path = sub_paths.get_path('results')
         return any(os.scandir(results_path))
 
-    # log file appends by default
+    # log file appends by default.
     def ensure_clean_log(self):
-        librec_log = Path(Files.LOG_PATH)
+        librec_log = self.get_log_file()
         if librec_log.is_file():
-            librec_log.unlink()
+            if self._preserve_log:
+                ts = int(time.time())
+                filename = librec_log.stem
+                new_path = librec_log.parent / (filename + '-' + str(ts) + librec_log.suffix)
+                librec_log.rename(new_path)
+            else:
+                librec_log.unlink()
 
     def create_proc_spec(self):
         classpath = self._config.get_files().get_classpath()
