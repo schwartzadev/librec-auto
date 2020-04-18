@@ -215,6 +215,7 @@ class ConfigCmd:
             self._value_tuples = list(itertools.product(*var_values))
 
     # TODO RB 2019-12-12 Should include some error-checking and better messages for badly-formed XML
+    # Also need to allow variable parameters
     def collect_scripts(self, script_type):
         post_xml = self.get_unparsed(script_type)
         script_xml = post_xml['script']
