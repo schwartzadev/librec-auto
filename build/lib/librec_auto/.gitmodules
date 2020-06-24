@@ -1,3 +1,0 @@
-[submodule "lib/librec"]
-	path = lib/librec
-	url = https://github.com/rburke2233/librec.git
