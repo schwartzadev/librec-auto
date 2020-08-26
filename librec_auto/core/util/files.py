@@ -213,6 +213,9 @@ class SubPaths:
         else:
             return None
 
+    def get_log_path(self):
+        return self.get_path('log') / self.DEFAULT_LOG_FILENAME
+
     def get_librec_properties_path(self):
         return self.get_path('conf') / Files.DEFAULT_PROP_FILE_NAME
 
