@@ -32,13 +32,6 @@ def force_path(item):
         return Path(item)
 
 
-def frange(start, stop, step):
-    x = start
-    while x < stop:
-        yield x
-        x += step
-
-
 def confirm(prompt=None, resp=False):
     """prompts for yes or no response from the user. Returns True for yes and
     False for no.

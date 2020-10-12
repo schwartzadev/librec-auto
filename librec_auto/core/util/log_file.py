@@ -33,9 +33,6 @@ class LogFile:
     def get_metrics(self):
         return self._metrics
 
-    def get_metric_count(self):
-        return len(self._metrics)
-
     def add_metric_value(self, metric, value):
         if metric in self._metrics:
             self._values[metric].append(value)

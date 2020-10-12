@@ -27,9 +27,6 @@ class ParallelCmd(Cmd):
     def add_command(self, cmd):
         self._commands.append(cmd)
 
-    def get_commands(self):
-        return self._commands
-
     def dry_run(self, config):
         print(f"librec-auto (DR): Executing parallel, command {self}")
         self.status = Cmd.STATUS_INPROC

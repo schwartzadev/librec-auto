@@ -6,7 +6,6 @@ import sys
 import librec_auto
 from pathlib import Path
 
-import progressbar
 import urllib.request
 import time
 

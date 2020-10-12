@@ -1,5 +1,4 @@
 from pathlib import Path
-import hashlib
 import inspect
 import librec_auto
 from librec_auto.core.util.utils import force_path
@@ -55,7 +54,6 @@ class Files:
         #        self._split_dir_path = Path(self._DEFAULT_SPLIT_DIR_NAME)
         self._jar_dir_path = Path(self._DEFAULT_JAR_DIR_NAME)
         self._post_dir_path = Path(self._DEFAULT_POST_DIR_NAME)
-        self._lib_dir_path = Path(self._DEFAULT_LIBRARY_DIR_NAME)
         self._exp_path_dict = OrderedDict()
 
         module_init_path = Path(Files._DEFAULT_GLOBAL_DIR_STR).parent
@@ -157,29 +155,6 @@ class Files:
     def get_exp_paths_iterator(self):
         return self._exp_path_dict.values()
 
-    @staticmethod
-    def dir_hash(maybe_path):
-        """
-        Starting from a directory, gets all subdirectories, extracts the individual files and creates a hash value
-        using the file name, size, and last modification date.
-
-        Probably just modification date is enough.
-        :param maybe_path:
-        :return:
-        """
-        hasher = hashlib.sha1()
-        path = force_path(maybe_path)
-        full_listing = path.glob('**/*')
-        files = [fl for fl in full_listing if fl.is_file()]
-        for fl in files:
-            fl_stat = fl.stat()
-            fl_size = fl_stat.st_size
-            fl_date = fl_stat.st_mtime
-            fl_info = "{}-{}-{}".format(fl.name, fl_size, fl_date)
-            fl_bytes = fl_info.encode('utf-8')
-            hasher.update(fl_bytes)
-        return hasher.hexdigest()
-
 
 class ExpPaths:
     """
@@ -254,17 +229,11 @@ class ExpPaths:
     def get_path_str(self, type):
         return self.get_path(type).as_posix()
 
-    def get_path_platform(self, type):
-        return str(self.get_path(type))
-
     def get_path_prop(self, type):
         return self._prop_dict[type]
 
     def set_path(self, type, path):
         self._path_dict[type] = path
-
-    def set_path_from_string(self, type, path_str):
-        self._path_dict[type] = Path(path_str)
 
     def get_study_conf(self):
         path = self.get_path('conf') / Files.DEFAULT_CONFIG_FILENAME
@@ -301,14 +270,6 @@ class ExpPaths:
         files = glob.glob((result_path / '*').as_posix())
         for file in files:
             shutil.copy2(file, original_path)
-
-    def original2results(self):
-        original_path = self.get_path('original')
-        result_path = self.get_path('result')
-        files = glob.glob((original_path / '*').as_posix())
-        for file in files:
-            shutil.copy2(file, result_path)
-        shutil.rmtree(original_path)
 
     def get_log_path(self):
         stamp = datetime.now().strftime("%Y%m%d_%H%M%S")

@@ -10,7 +10,6 @@ import subprocess
 
 class PostCmd(Cmd):
 
-    POST_SCRIPT_PATH = "core/cmd/post"
     POST_ELEM_XPATH = '/librec-auto/post/script'
 
     def __init__(self):

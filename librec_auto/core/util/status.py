@@ -35,7 +35,6 @@ class Status():
                 self.process_params(params)
             else:
                 self._params = []
-                self.m_vals = []
 
     def __str__(self):
         params_string = self.get_params_string()

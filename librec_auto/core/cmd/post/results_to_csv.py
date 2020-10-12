@@ -12,8 +12,6 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 
-extract_params_format = "extract_{}_params"
-
 
 def get_metric_info(files):
     metric_info = {}

@@ -6,7 +6,6 @@ from lxml import etree
 import copy
 import logging
 from pathlib import Path
-from librec_auto.core.config_lib import ConfigLibCollection, ConfigLib
 import re
 
 
@@ -27,7 +26,7 @@ class ConfigCmd:
         self._files.set_study_path(target)
         self._files.set_config_file(config_file)
 
-        self._xml_input = self.read_xml(self._files.get_config_file_path())
+        self._xml_input = self.read_xml()
         #self._var_librec_data = defaultdict(list)
         #self._var_rerank_data = defaultdict(list)
         #self._var_params = []
@@ -39,9 +38,6 @@ class ConfigCmd:
 
     def get_target(self):
         return self._target
-
-    def set_target(self, target):
-        self._target = target
 
     def get_xml(self):
         return self._xml_input
@@ -55,9 +51,6 @@ class ConfigCmd:
     def set_key_password(self, pw):
         self._key_password = pw
 
-    def get_value_conf(self, subexp_no):
-        return self._var_coll.var_confs[subexp_no]
-
     def get_sub_exp_count(self):
         exp_count = len(self._var_coll.var_confs)
         if exp_count == 0:
@@ -68,7 +61,7 @@ class ConfigCmd:
     def get_files(self):
         return self._files
 
-    def read_xml(self, path_str):
+    def read_xml(self):
         path = self._files.get_config_file_path()
         if (path.exists()):
             xml_input = xml_load_from_path(path)
@@ -83,7 +76,6 @@ class ConfigCmd:
         self.get_files().ensure_exp_paths(exp_count)
 
     def load_libraries(self):
-        lib_paths = []
         lib_elems = self._xml_input.xpath('/librec-auto/library')
         for elem in lib_elems:
             self._libraries.add_lib(
@@ -94,7 +86,6 @@ class ConfigCmd:
     # or xpath-string => (range-to, range-from) pair
     # Right now, we will assume the first
     def process_config(self):
-        self._var_data = defaultdict(list)
         self.substitute_library()
         self.collect_vars()
         self.ensure_experiments()

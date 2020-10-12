@@ -11,7 +11,6 @@ matplotlib.use('Agg')  # For non-windowed plotting
 viz_file_pattern_bar = "viz-bar-{}.jpg"
 viz_file_pattern_box = "viz-box-{}.jpg"
 viz_html_filename = "viz.html"
-exp_dir_pattern = "exp[0-9][0-9][0-9]"
 
 # Things we need from each experiment run
 # name (dir), params that changed, values of changing parameters, metrics measured,

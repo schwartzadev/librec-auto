@@ -16,15 +16,6 @@ def build_parent_path(elem, pathsofar=''):
         return build_parent_path(elem.getparent(), nextpath)
 
 
-def read_xml_from_path_string(path_str):
-    path = Path(path_str)
-    if path.exists():
-        return xml_load_from_path(path)
-    else:
-        logging.error(f'XML file {path_str} does not exist. Load failed.')
-        return None
-
-
 def xml_load_from_path(path):
     """
     Loads the XML file in a dictionary

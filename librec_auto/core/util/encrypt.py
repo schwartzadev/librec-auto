@@ -30,23 +30,6 @@ def encrypt(data, password):
     crypt_data = fn.encrypt(data)
     return crypt_data
 
-
-def decrypt_string(edata, password):
-    plain_data = decrypt(edata, password)
-    return plain_data.decode('utf-8')
-
-
-def encrypt_string(string, password):
-    data = string.encode('utf-8')
-    return encrypt(data, password)
-
-
-def encrypt_to_file(outfile, data, password):
-    encrypted = encrypt(data, password)
-    with open(outfile, "wb") as encry:
-        encry.write(encrypted)
-
-
 def decrypt_from_file(infile, password):
     with open(infile, "rb") as encry:
         data = encry.read()

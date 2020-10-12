@@ -4,9 +4,8 @@ from librec_auto.core import ConfigCmd
 from librec_auto.core.util.xml_utils import single_xpath
 import os
 import subprocess
-import shlex
 import time
-from pathlib import Path, WindowsPath
+from pathlib import Path
 
 
 class LibrecCmd(Cmd):
@@ -156,8 +155,6 @@ class LibrecCmd(Cmd):
 
     # 2019-11-23 RB Not sure if this step can be replaced by more checking when commands are created.
     def select_librec_action(self):
-        expVal = self._exp_path.exp_name
-
         if self._command == 'split':
             # check if split exists, if so split command doesn't make sense. Does not purge here.
             if self.split_exists():

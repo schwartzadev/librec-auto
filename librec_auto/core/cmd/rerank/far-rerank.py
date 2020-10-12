@@ -164,7 +164,6 @@ def read_args():
 
 
 RESULT_FILE_PATTERN = 'out-(\d+).txt'
-INPUT_FILE_PATTERN = 'cv_\d+'
 
 
 def enumerate_results(result_path):
